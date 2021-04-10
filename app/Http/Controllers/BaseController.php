@@ -51,7 +51,7 @@ class BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function jsonResponse($data, int $code)
+    protected function jsonResponse($data, int $code = 200)
     {
         return response()->json($data, $code);
     }
