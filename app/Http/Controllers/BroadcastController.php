@@ -23,6 +23,10 @@ class BroadcastController extends BaseController
 
         $published = $this->broadcast_service->publish($topic, (object) $request->all());
 
+        if ($published == false) {
+            return $this->errorResponse('The topic \'' . $topic . '\' does not exist!', 404);
+        }
+
         if (empty($published) == false) {
             return $this->errorResponse('Could not publish message to the following subscriber(s): ' . implode(', ', $published));
         }
