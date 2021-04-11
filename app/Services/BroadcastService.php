@@ -23,17 +23,22 @@ class BroadcastService
     public function publish(string $topic, object $message)
     {
         try {
-            $subscribers = Topic::where('name', $topic)
-                ->with('subscribers')
-                ->first()
-                ->subscribers()
-                ->pluck('name');
+            $topic = Topic::where('name', $topic)->with('subscribers')->first();
+
+            if (! $topic) {
+                return false;
+            }
+            
+            $subscribers = $topic->subscribers()->pluck('name');
 
             $client   = new Client();
             $promises = [];
 
             foreach ($subscribers as $subscriber) {
-                $promises[] = $client->postAsync($subscriber, [ 'form_params' => $message ]);
+                $promises[] = $client->postAsync(
+                    $subscriber,
+                    [ 'form_params' => [ 'topic' => $topic, 'data' => (object) $message ] ]
+                );
             }
 
             $failed_broadcasts = [];
