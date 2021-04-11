@@ -27,5 +27,3 @@ The SimpNot project can be setup locally by following the steps below:
 * `php artisan migrate`
 * Finally, run the development server for the Publisher using `php -S localhost:8000 -t ./public`
 * You may also run another development server for the Subscriber using the `php -S localhost:9000 -t ./public`
-
-## NOTES:
